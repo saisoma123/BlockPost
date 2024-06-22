@@ -1,0 +1,15 @@
+syntax = "proto3";
+package blockpost.blockpost;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/saisoma123/BlockPost/x/blockpost/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "blockpost/x/blockpost/Params";
+  option (gogoproto.equal) = true;
+
+  
+}

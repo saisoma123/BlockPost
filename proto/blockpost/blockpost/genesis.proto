@@ -1,0 +1,17 @@
+syntax = "proto3";
+package blockpost.blockpost;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "blockpost/blockpost/params.proto";
+
+option go_package = "github.com/saisoma123/BlockPost/x/blockpost/types";
+
+// GenesisState defines the blockpost module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
