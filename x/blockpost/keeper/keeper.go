@@ -4,9 +4,11 @@ import (
 	"fmt"
 
 	"cosmossdk.io/core/store"
+	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/log"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
 	"github.com/saisoma123/BlockPost/x/blockpost/types"
 )
@@ -43,12 +45,33 @@ func NewKeeper(
 }
 
 // Adds message to KVStore with unique id
-func (k Keeper) addMessage(ctx sdk.Context, creator string, message string) (*sdk.Result, error) {
-	return nil, nil
+func (k Keeper) addMessage(ctx sdk.Context, creator string, message string) (string, error) {
+	// Opens the KVStore
+	store := k.storeService.OpenKVStore(ctx)
+
+	messageID := genMessageID(ctx)
+
+	// Instantiates MsgBlockPostMessage with sender address and message
+	msg := types.MsgBlockPostMessage{
+		Creator: creator,
+		Message: message,
+	}
+
+	// Converts message to binary format for storing in KVStore
+	bz, err := k.cdc.Marshal(&msg)
+
+	if err != nil {
+		return "", errorsmod.Wrapf(sdkerrors.ErrJSONMarshal, "Problem with marshalling message", err)
+	}
+
+	// Stores marshalled message with ID converted to bytes array as key
+	store.Set([]byte(messageID), bz)
+
+	return messageID, nil
 }
 
 // Generates a unique ID per string stored
-func (k Keeper) genMessageID(ctx sdk.Context) string {
+func genMessageID(ctx sdk.Context) string {
 	return ""
 }
 
