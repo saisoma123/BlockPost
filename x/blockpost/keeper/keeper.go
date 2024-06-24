@@ -85,13 +85,31 @@ func genMessageID(ctx sdk.Context) string {
 }
 
 // Retrieves message from store with id
-func (k Keeper) getMessage(ctx sdk.Context, id string) (types.MsgBlockPostMessage, error) {
-	return types.MsgBlockPostMessage{}, nil
+func (k Keeper) getMessage(ctx sdk.Context, id string) (string, error) {
+	//Opens store
+	store := k.storeService.OpenKVStore(ctx)
+
+	// Retrieves the marshalled message
+	bz, err := store.Get([]byte(id))
+	if bz == nil {
+		errorsmod.Wrapf(sdkerrors.ErrNotFound, "Message not found", err)
+	}
+	if err != nil {
+		loggy.Fatalf("Error occurred: %v", err)
+	}
+
+	// Unmarshalls the message into msg and returns the Message field
+	var msg types.MsgBlockPostMessage
+	unmarshal_error := k.cdc.Unmarshal(bz, &msg)
+	if err != nil {
+		errorsmod.Wrapf(sdkerrors.ErrJSONUnmarshal, "Error with unmarshalling the object", unmarshal_error)
+	}
+	return msg.Message, nil
 }
 
 // Retrieves all messages from store
-func (k Keeper) getAllMessages(ctx sdk.Context) ([]types.MsgBlockPostMessage, error) {
-	return []types.MsgBlockPostMessage{}, nil
+func (k Keeper) getAllMessages(ctx sdk.Context) ([]string, error) {
+	return nil, nil
 }
 
 // GetAuthority returns the module's authority.
