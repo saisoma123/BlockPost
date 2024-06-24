@@ -15,12 +15,12 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/saisoma123/BlockPost/blockpost/params";
   }
-  
+
   rpc Message(QueryMessageRequest) returns (QueryMessageResponse) {
     option (google.api.http).get = "/saisoma123/BlockPost/blockpost/messages/{id}";
   }
 
-  rpc Messages(QueryMessagesRequest) returns (QueryMessagesResponse) {
+  rpc Messages(QueryAllMessagesRequest) returns (QueryAllMessagesResponse) {
     option (google.api.http).get = "/saisoma123/BlockPost/blockpost/messages";
   }
 
