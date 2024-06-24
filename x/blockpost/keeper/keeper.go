@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	loggy "log"
 
 	"cosmossdk.io/core/store"
 	errorsmod "cosmossdk.io/errors"
@@ -9,6 +10,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+
+	gonanoid "github.com/matoous/go-nanoid/v2"
 
 	"github.com/saisoma123/BlockPost/x/blockpost/types"
 )
@@ -72,7 +75,13 @@ func (k Keeper) addMessage(ctx sdk.Context, creator string, message string) (str
 
 // Generates a unique ID per string stored
 func genMessageID(ctx sdk.Context) string {
-	return ""
+
+	// Generates a new, compact NanoID
+	id, err := gonanoid.New()
+	if err != nil {
+		loggy.Fatalf("Failed to generate NanoID: %v", err)
+	}
+	return id
 }
 
 // Retrieves message from store with id
