@@ -42,6 +42,26 @@ func NewKeeper(
 	}
 }
 
+// Adds message to KVStore with unique id
+func (k Keeper) addMessage(ctx sdk.Context, creator string, message string) (*sdk.Result, error) {
+	return nil, nil
+}
+
+// Generates a unique ID per string stored
+func (k Keeper) genMessageID(ctx sdk.Context) string {
+	return ""
+}
+
+// Retrieves message from store with id
+func (k Keeper) getMessage(ctx sdk.Context, id string) (types.MsgBlockPostMessage, error) {
+	return types.MsgBlockPostMessage{}, nil
+}
+
+// Retrieves all messages from store
+func (k Keeper) getAllMessages(ctx sdk.Context) ([]types.MsgBlockPostMessage, error) {
+	return []types.MsgBlockPostMessage{}, nil
+}
+
 // GetAuthority returns the module's authority.
 func (k Keeper) GetAuthority() string {
 	return k.authority
