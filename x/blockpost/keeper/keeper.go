@@ -109,7 +109,29 @@ func (k Keeper) getMessage(ctx sdk.Context, id string) (string, error) {
 
 // Retrieves all messages from store
 func (k Keeper) getAllMessages(ctx sdk.Context) ([]string, error) {
-	return nil, nil
+	// Opens the store
+	store := k.storeService.OpenKVStore(ctx)
+
+	var messages []string
+
+	iterator, err := store.Iterator(nil, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer iterator.Close()
+
+	for ; iterator.Valid(); iterator.Next() {
+		var msg types.MsgBlockPostMessage
+
+		err := k.cdc.Unmarshal(iterator.Value(), &msg)
+		if err != nil {
+			return nil, nil
+		}
+
+		messages = append(messages, msg.Message)
+	}
+
+	return messages, nil
 }
 
 // GetAuthority returns the module's authority.
