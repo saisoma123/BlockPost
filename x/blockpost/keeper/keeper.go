@@ -48,7 +48,7 @@ func NewKeeper(
 }
 
 // Adds message to KVStore with unique id
-func (k Keeper) addMessage(ctx sdk.Context, creator string, message string) (string, error) {
+func (k Keeper) AddMessage(ctx sdk.Context, creator string, message string) (string, error) {
 	// Opens the KVStore
 	store := k.storeService.OpenKVStore(ctx)
 
@@ -85,7 +85,7 @@ func genMessageID(ctx sdk.Context) string {
 }
 
 // Retrieves message from store with id
-func (k Keeper) getMessage(ctx sdk.Context, id string) (string, error) {
+func (k Keeper) GetMessage(ctx sdk.Context, id string) (string, error) {
 	//Opens store
 	store := k.storeService.OpenKVStore(ctx)
 
