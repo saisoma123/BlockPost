@@ -19,7 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Query_Params_FullMethodName = "/blockpost.blockpost.Query/Params"
+	Query_Params_FullMethodName   = "/blockpost.blockpost.Query/Params"
+	Query_Message_FullMethodName  = "/blockpost.blockpost.Query/Message"
+	Query_Messages_FullMethodName = "/blockpost.blockpost.Query/Messages"
 )
 
 // QueryClient is the client API for Query service.
@@ -28,6 +30,8 @@ const (
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	Message(ctx context.Context, in *QueryMessageRequest, opts ...grpc.CallOption) (*QueryMessageResponse, error)
+	Messages(ctx context.Context, in *QueryAllMessagesRequest, opts ...grpc.CallOption) (*QueryAllMessagesResponse, error)
 }
 
 type queryClient struct {
@@ -47,12 +51,32 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
+func (c *queryClient) Message(ctx context.Context, in *QueryMessageRequest, opts ...grpc.CallOption) (*QueryMessageResponse, error) {
+	out := new(QueryMessageResponse)
+	err := c.cc.Invoke(ctx, Query_Message_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) Messages(ctx context.Context, in *QueryAllMessagesRequest, opts ...grpc.CallOption) (*QueryAllMessagesResponse, error) {
+	out := new(QueryAllMessagesResponse)
+	err := c.cc.Invoke(ctx, Query_Messages_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	Message(context.Context, *QueryMessageRequest) (*QueryMessageResponse, error)
+	Messages(context.Context, *QueryAllMessagesRequest) (*QueryAllMessagesResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -62,6 +86,12 @@ type UnimplementedQueryServer struct {
 
 func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
+func (UnimplementedQueryServer) Message(context.Context, *QueryMessageRequest) (*QueryMessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Message not implemented")
+}
+func (UnimplementedQueryServer) Messages(context.Context, *QueryAllMessagesRequest) (*QueryAllMessagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Messages not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -94,6 +124,42 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_Message_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Message(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_Message_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Message(ctx, req.(*QueryMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_Messages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllMessagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Messages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_Messages_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Messages(ctx, req.(*QueryAllMessagesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -104,6 +170,14 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
+		},
+		{
+			MethodName: "Message",
+			Handler:    _Query_Message_Handler,
+		},
+		{
+			MethodName: "Messages",
+			Handler:    _Query_Messages_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
