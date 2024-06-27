@@ -29,7 +29,7 @@ func (m msgServer) BlockPostMessageStore(ctx context.Context, msg *types.MsgBloc
 	}
 
 	// Adds message to KVStore and checks for any errors in processing
-	messageID, err := m.Keeper.addMessage(sdk.UnwrapSDKContext(ctx), msg.Creator, msg.Message)
+	messageID, err := m.Keeper.AddMessage(sdk.UnwrapSDKContext(ctx), msg.Creator, msg.Message)
 	if err != nil {
 		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "failed to add message")
 	}

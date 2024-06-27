@@ -36,7 +36,7 @@ func (q queryServer) Message(ctx context.Context, req *types.QueryMessageRequest
 func (q queryServer) Messages(ctx context.Context, req *types.QueryAllMessagesRequest) (*types.QueryAllMessagesResponse, error) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
-	messages, err := q.k.getAllMessages(sdkCtx)
+	messages, err := q.k.GetAllMessages(sdkCtx)
 	if err != nil {
 		return nil, err
 	}
