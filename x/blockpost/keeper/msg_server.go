@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -20,11 +21,12 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 }
 
 // Calls the addMessage keeper function and validates transactions
-func (m msgServer) BlockPostMessageStore(ctx context.Context, msg *types.MsgBlockPostMessage) (*types.MsgBlockPostMessageResponse, error) {
+func (m msgServer) BlockPostMessage(ctx context.Context, msg *types.MsgBlockPostMessage) (*types.MsgBlockPostMessageResponse, error) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
 	// Validates incoming message through creator and message strings
 	if err := msg.ValidateBasic(); err != nil {
+		fmt.Println("Validation failed!")
 		return nil, err
 	}
 
