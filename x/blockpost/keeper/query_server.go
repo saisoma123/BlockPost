@@ -25,7 +25,7 @@ func (q queryServer) Params(ctx context.Context, req *types.QueryParamsRequest) 
 func (q queryServer) Message(ctx context.Context, req *types.QueryMessageRequest) (*types.QueryMessageResponse, error) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
-	message, err := q.k.getMessage(sdkCtx, req.Id)
+	message, err := q.k.GetMessage(sdkCtx, req.Id)
 	if err != nil {
 		return nil, err
 	}

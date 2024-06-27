@@ -8,6 +8,10 @@ import (
 	// this line is used by starport scaffolding # 1
 )
 
+var (
+	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
+)
+
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgBlockPostMessage{}, "blockpost/BlockPostMessage", nil)
 }
@@ -22,4 +26,8 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgUpdateParams{},
 	)
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
+}
+
+func init() {
+	RegisterInterfaces(ModuleCdc.InterfaceRegistry())
 }
