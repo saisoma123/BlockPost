@@ -52,7 +52,7 @@ func (k Keeper) AddMessage(ctx sdk.Context, creator string, message string) (str
 	// Opens the KVStore
 	store := k.storeService.OpenKVStore(ctx)
 
-	messageID := genMessageID(ctx)
+	messageID := genMessageID()
 
 	// Instantiates MsgBlockPostMessage with sender address and message
 	msg := types.MsgBlockPostMessage{
@@ -74,7 +74,7 @@ func (k Keeper) AddMessage(ctx sdk.Context, creator string, message string) (str
 }
 
 // Generates a unique ID per string stored
-func genMessageID(ctx sdk.Context) string {
+func genMessageID() string {
 
 	// Generates a new, compact NanoID
 	id, err := gonanoid.New()
@@ -108,7 +108,7 @@ func (k Keeper) GetMessage(ctx sdk.Context, id string) (string, error) {
 }
 
 // Retrieves all messages from store
-func (k Keeper) getAllMessages(ctx sdk.Context) ([]string, error) {
+func (k Keeper) GetAllMessages(ctx sdk.Context) ([]string, error) {
 	// Opens the store
 	store := k.storeService.OpenKVStore(ctx)
 
@@ -126,6 +126,10 @@ func (k Keeper) getAllMessages(ctx sdk.Context) ([]string, error) {
 		err := k.cdc.Unmarshal(iterator.Value(), &msg)
 		if err != nil {
 			return nil, nil
+		}
+
+		if msg.Message == "" {
+			continue
 		}
 
 		messages = append(messages, msg.Message)
