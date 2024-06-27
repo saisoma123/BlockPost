@@ -64,11 +64,14 @@ func (k Keeper) AddMessage(ctx sdk.Context, creator string, message string) (str
 	bz, err := k.cdc.Marshal(&msg)
 
 	if err != nil {
-		return "", errorsmod.Wrapf(sdkerrors.ErrJSONMarshal, "Problem with marshalling message", err)
+		return "", errorsmod.Wrapf(sdkerrors.ErrJSONMarshal, "error marshalling message: %v", err)
 	}
 
 	// Stores marshalled message with ID converted to bytes array as key
-	store.Set([]byte(messageID), bz)
+	set_err := store.Set([]byte(messageID), bz)
+	if set_err != nil {
+		return "", errorsmod.Wrapf(sdkerrors.ErrUnknownRequest, "error storing message with ID %s: %v", messageID, set_err)
+	}
 
 	return messageID, nil
 }
@@ -92,17 +95,17 @@ func (k Keeper) GetMessage(ctx sdk.Context, id string) (string, error) {
 	// Retrieves the marshalled message
 	bz, err := store.Get([]byte(id))
 	if bz == nil {
-		errorsmod.Wrapf(sdkerrors.ErrNotFound, "Message not found", err)
+		return "", errorsmod.Wrapf(sdkerrors.ErrNotFound, "message with ID %s not found", id)
 	}
 	if err != nil {
-		loggy.Fatalf("Error occurred: %v", err)
+		return "", errorsmod.Wrapf(sdkerrors.ErrKeyNotFound, "error retrieving message with ID %s: %v", id, err)
 	}
 
 	// Unmarshalls the message into msg and returns the Message field
 	var msg types.MsgBlockPostMessage
 	unmarshal_error := k.cdc.Unmarshal(bz, &msg)
-	if err != nil {
-		errorsmod.Wrapf(sdkerrors.ErrJSONUnmarshal, "Error with unmarshalling the object", unmarshal_error)
+	if unmarshal_error != nil {
+		return "", errorsmod.Wrapf(sdkerrors.ErrJSONUnmarshal, "error unmarshalling message with ID %s: %v", id, unmarshal_error)
 	}
 	return msg.Message, nil
 }
