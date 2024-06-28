@@ -43,5 +43,7 @@ message MsgBlockPostMessage {
   string Message = 2;
 }
 
-message MsgBlockPostMessageResponse {}
+message MsgBlockPostMessageResponse {
+    string message_id = 1;
+}
 
