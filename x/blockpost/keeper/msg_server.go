@@ -47,7 +47,7 @@ func (m msgServer) BlockPostMessage(ctx context.Context, msg *types.MsgBlockPost
 		),
 	})
 
-	return &types.MsgBlockPostMessageResponse{}, nil
+	return &types.MsgBlockPostMessageResponse{MessageId: messageID}, nil
 }
 
 var _ types.MsgServer = msgServer{}
