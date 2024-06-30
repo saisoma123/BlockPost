@@ -11,16 +11,18 @@ var (
 	ModuleCdc = codec.NewProtoCodec(cdctypes.NewInterfaceRegistry())
 )
 
-func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgBlockPostMessage{}, "blockpost/BlockPostMessage", nil)
-}
-
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgBlockPostMessage{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgBlockPostMessageResponse{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgUpdateParams{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgUpdateParamsResponse{},
 	)
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }
