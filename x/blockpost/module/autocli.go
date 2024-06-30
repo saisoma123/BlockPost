@@ -29,10 +29,13 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Skip:      true, // skipped because authority gated
 				},
 				{
-					RpcMethod:      "BlockPostMessage",
-					Use:            "block-post-message",
-					Short:          "Send a BlockPostMessage tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
+					RpcMethod: "BlockPostMessage",
+					Use:       "block-post-message",
+					Short:     "Send a BlockPostMessage tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
+						{ProtoField: "creator"},
+						{ProtoField: "Message"},
+					},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

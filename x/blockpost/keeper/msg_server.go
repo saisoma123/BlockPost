@@ -36,7 +36,6 @@ func (m msgServer) BlockPostMessage(ctx context.Context, msg *types.MsgBlockPost
 		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "failed to add message")
 	}
 
-	// Emits event for logging history
 	sdkCtx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(
 			sdk.EventTypeMessage,
