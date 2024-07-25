@@ -123,6 +123,9 @@ func (k Keeper) GetAllMessages(ctx sdk.Context) ([]string, error) {
 	}
 	defer iterator.Close()
 
+	// Simply iterates throguh the store and unmarshals each message and appends
+	// to an array, and the array is returned
+
 	for ; iterator.Valid(); iterator.Next() {
 		var msg types.MsgBlockPostMessage
 

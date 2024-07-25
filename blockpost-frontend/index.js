@@ -10,6 +10,11 @@ const port = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+/* This function queries the transaction and gets the message id from the event 
+   logs, it does it multiple times, as the transaction can take a while to be 
+   fully registered on-chain
+*/
+
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const queryTransaction = async (txHash, retries = 10, delayTime = 5000) => {
@@ -47,6 +52,11 @@ const queryTransaction = async (txHash, retries = 10, delayTime = 5000) => {
   }
 };
 
+/* This directly runs the BlockPost binary app and calls the Keeper add message
+   function, which stores the message in an IAVL tree,
+  and calls the queryTransaction method to retrieve the message id
+   from the event logs
+*/
 app.post('/store-message', (req, res) => {
   console.log('Received a request to /store-message');
   const { message, creator } = req.body;
@@ -77,10 +87,13 @@ app.post('/store-message', (req, res) => {
   });
 });
 
+// This creates an account on the BlockPost chain and sends tokens for the 
+// account, so that they can participate in on-chain transactions
 app.post('/create-account', (req, res) => {
   console.log('Received a request to /create-account');
   const { name } = req.body;
 
+  // Creates a new account and outputs an address to the user
   exec(`BlockPostd keys add "${name}"`, (error, stdout, stderr) => {
     if (error) {
       console.error(`Error creating account: ${stderr}`);
@@ -102,6 +115,7 @@ app.post('/create-account', (req, res) => {
   });
 });
 
+// This calls the Querier function and retrieves the message from the IAVL tree
 app.get('/get-message/:id', async (req, res) => {
   console.log(`Received a request to /get-message/${req.params.id}`);
   const { id } = req.params;

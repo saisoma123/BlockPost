@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+
+// CSS code for self contained HTML code
 const Container = styled.div`
   width: 100%;
   max-width: 600px;
@@ -45,6 +47,10 @@ const MessageForm = () => {
   const [newAccountName, setNewAccountName] = useState('');
   const [newAccountResponse, setNewAccountResponse] = useState('');
 
+  /* This sends a POST request to the js server, which in turn stores a message
+     via the BlockPost binary with a transaction that calls the Keeper addMessage
+     method
+  */
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -64,6 +70,10 @@ const MessageForm = () => {
     }
   };
 
+  /* This sends a request to the js server to retrieve the message from the AVL
+     tree via the Querier implementation
+  */
+
   const handleRetrieve = async (e) => {
     e.preventDefault();
     try {
@@ -74,7 +84,10 @@ const MessageForm = () => {
       console.error('Error retrieving message:', error);
     }
   };
-
+  /* This sends a POST request to create an account on the blockchain for
+     sending/storing messages, and fills the account with tokens to participate
+     in on-chain transactions
+  */
   const handleCreateAccount = async (e) => {
     e.preventDefault();
     try {
@@ -93,6 +106,8 @@ const MessageForm = () => {
     }
   };
 
+  // This creates an HTML file with all the necessary fields for user interactions
+  // with the BlockPost app, and calls the methods that request the js_server response
   return (
     <Container>
       <h2>Create a New Account</h2>

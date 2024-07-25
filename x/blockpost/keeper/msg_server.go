@@ -36,6 +36,8 @@ func (m msgServer) BlockPostMessage(ctx context.Context, msg *types.MsgBlockPost
 		return nil, errorsmod.Wrapf(sdkerrors.ErrInvalidRequest, "failed to add message")
 	}
 
+	// Emits event to show message was stored on-chain with message_id,
+	// which is queried by the js_server to retrieve the message_id
 	sdkCtx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(
 			sdk.EventTypeMessage,

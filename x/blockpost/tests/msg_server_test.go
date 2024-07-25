@@ -17,7 +17,7 @@ func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {
 
 func TestMsgServer_BlockPostMessageStore(t *testing.T) {
 	msgServer, ctx := setupMsgServer(t)
-
+	// Variety of tests to see if edge cases are handled correctly
 	tests := []struct {
 		name    string
 		creator string
@@ -71,6 +71,7 @@ func TestMsgServer_BlockPostMessageStore_DuplicateMessages(t *testing.T) {
 func TestMsgServer_BlockPostMessageStore_InvalidTypes(t *testing.T) {
 	msgServer, ctx := setupMsgServer(t)
 
+	// Tests if the validation method correctly identifies invalid address/message
 	tests := []struct {
 		name string
 		msg  *types.MsgBlockPostMessage

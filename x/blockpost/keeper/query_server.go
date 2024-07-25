@@ -22,6 +22,7 @@ func (q queryServer) Params(ctx context.Context, req *types.QueryParamsRequest) 
 	return &types.QueryParamsResponse{Params: params}, nil
 }
 
+// Calls the keeper GetMessage function and returns the message as a response
 func (q queryServer) Message(ctx context.Context, req *types.QueryMessageRequest) (*types.QueryMessageResponse, error) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 
@@ -33,6 +34,7 @@ func (q queryServer) Message(ctx context.Context, req *types.QueryMessageRequest
 	return &types.QueryMessageResponse{Message: message}, nil
 }
 
+// Calls the keeper GetAllMessages function and returns the messages as a response
 func (q queryServer) Messages(ctx context.Context, req *types.QueryAllMessagesRequest) (*types.QueryAllMessagesResponse, error) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 

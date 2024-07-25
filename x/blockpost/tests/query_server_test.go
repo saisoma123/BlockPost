@@ -124,6 +124,7 @@ func TestQueryServer_ManyMessagesWithDifferentCreators(t *testing.T) {
 		}
 	}
 
+	// Matches expected messages to actual result
 	req := &types.QueryAllMessagesRequest{Pagination: &query.PageRequest{
 		Limit:  10,
 		Offset: 0,
