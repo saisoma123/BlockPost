@@ -122,47 +122,6 @@ paths:
           type: boolean
       tags:
         - Query
-    post:
-      operationId: BlockpostBlockpostMsg_BlockPostMessage
-      responses:
-        '200':
-          description: A successful response.
-          schema:
-            type: object
-            properties:
-              message_id:
-                type: string
-        default:
-          description: An unexpected error response.
-          schema:
-            type: object
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
-              details:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    '@type':
-                      type: string
-                  additionalProperties: {}
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            type: object
-            properties:
-              creator:
-                type: string
-              Message:
-                type: string
-      tags:
-        - Msg
   /saisoma123/BlockPost/blockpost/messages/{id}:
     get:
       operationId: BlockpostBlockpostQuery_Message
@@ -270,22 +229,53 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: body
-          description: MsgUpdateParams is the Msg/UpdateParams request type.
-          in: body
-          required: true
+        - name: authority
+          description: >-
+            authority is the address that controls the module (defaults to x/gov
+            unless overwritten).
+          in: query
+          required: false
+          type: string
+      tags:
+        - Msg
+  /blockpost/messages:
+    post:
+      operationId: BlockpostBlockpostMsg_BlockPostMessage
+      responses:
+        '200':
+          description: A successful response.
           schema:
             type: object
             properties:
-              authority:
+              message_id:
                 type: string
-                description: >-
-                  authority is the address that controls the module (defaults to
-                  x/gov unless overwritten).
-              params:
-                description: 'NOTE: All parameters must be supplied.'
-                type: object
-            description: MsgUpdateParams is the Msg/UpdateParams request type.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: creator
+          in: query
+          required: false
+          type: string
+        - name: Message
+          in: query
+          required: false
+          type: string
       tags:
         - Msg
   /cosmos.auth.v1beta1.Msg/UpdateParams:
@@ -16964,30 +16954,11 @@ definitions:
                repeated Bar results = 1;
                PageResponse page = 2;
        }
-  blockpost.blockpost.MsgBlockPostMessage:
-    type: object
-    properties:
-      creator:
-        type: string
-      Message:
-        type: string
   blockpost.blockpost.MsgBlockPostMessageResponse:
     type: object
     properties:
       message_id:
         type: string
-  blockpost.blockpost.MsgUpdateParams:
-    type: object
-    properties:
-      authority:
-        type: string
-        description: >-
-          authority is the address that controls the module (defaults to x/gov
-          unless overwritten).
-      params:
-        description: 'NOTE: All parameters must be supplied.'
-        type: object
-    description: MsgUpdateParams is the Msg/UpdateParams request type.
   blockpost.blockpost.MsgUpdateParamsResponse:
     type: object
     description: |-
