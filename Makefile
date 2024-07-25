@@ -15,6 +15,9 @@ frontend:
 	konsole --hold -e "bash -c 'cd $(FRONTEND_DIR) && node index.js; exec bash'" &
 	konsole --hold -e "bash -c 'cd $(FRONTEND_DIR) && npm start; exec bash'" &
 
+npm_build:
+	cd $(FRONTEND_DIR) && npm install
+
 .PHONY: all chain frontend
 
 TEST_DIR := x/blockpost/tests
