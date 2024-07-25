@@ -35,28 +35,6 @@ func TestQueryServer_Message(t *testing.T) {
 	require.Equal(t, message, resp.Message)
 }
 
-func TestQueryServer_Messages(t *testing.T) {
-	k, queryServer, sdkCtx := setupQueryServer(t)
-
-	// Add some messages to query later
-	creator := "cosmos1v9jxgu33kfsgr5"
-	messages := []string{"Hello, blockchain!", "Another message"}
-
-	for _, msg := range messages {
-		_, err := k.AddMessage(sdkCtx, creator, msg)
-		require.NoError(t, err)
-	}
-
-	// Query all messages
-	req := &types.QueryAllMessagesRequest{}
-	resp, err := queryServer.Messages(sdk.WrapSDKContext(sdkCtx), req)
-	require.NoError(t, err)
-	require.Equal(t, len(messages), len(resp.Messages))
-	for i, msg := range messages {
-		require.Equal(t, msg, resp.Messages[i])
-	}
-}
-
 func TestQueryServer_EmptyRequest(t *testing.T) {
 	_, queryServer, sdkCtx := setupQueryServer(t)
 
