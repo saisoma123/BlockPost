@@ -15,6 +15,15 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/saisoma123/BlockPost/blockpost/params";
   }
+
+  rpc Message(QueryMessageRequest) returns (QueryMessageResponse) {
+    option (google.api.http).get = "/saisoma123/BlockPost/blockpost/messages/{id}";
+  }
+
+  rpc Messages(QueryAllMessagesRequest) returns (QueryAllMessagesResponse) {
+    option (google.api.http).get = "/saisoma123/BlockPost/blockpost/messages";
+  }
+
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -27,4 +36,21 @@ message QueryParamsResponse {
     (gogoproto.nullable) = false,
     (amino.dont_omitempty) = true
   ];
+}
+
+message QueryAllMessagesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllMessagesResponse {
+  repeated string messages = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryMessageRequest {
+  string id = 1;
+}
+
+message QueryMessageResponse {
+  string message = 1;
 }
