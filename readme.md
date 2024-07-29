@@ -16,11 +16,12 @@
 5. `make npm_build` command will install all of the necessary JS packages to run the
 React app.
 6. `sudo apt install jq` for transaction querying.
-7. `make` command will start the app, it runs `ignite chain serve` to start the blockchain itself,
+7. Also install konsole with `sudo apt install konsole`.
+8. `make` command will start the app, it runs `ignite chain serve` to start the blockchain itself,
 then it starts a JS server and React app that you can interact with.
-8. `make runAllTests` command will run all of the tests for the main components of the app,
+9. `make runAllTests` command will run all of the tests for the main components of the app,
 the msg_server, query_server, keeper state management. To run individual tests,
-use these commands, `make keeper_test`, `make query_server_test`, `make msg_server_test` 
+use these commands, `make keeper_test`, `make query_server_test`, `make msg_server_test`
 
 Note that this is a localhost app, so the design decisions I made are secure for
 this particular app, as it is entirely local to the user. But, if I was to deploy this to an actual network, I would add
