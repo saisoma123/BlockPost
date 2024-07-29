@@ -62,8 +62,13 @@ const MessageForm = () => {
         body: JSON.stringify({ message, creator }),
       });
       const storeResponse = await res.json();
-      setMessageId(storeResponse.messageId);
-      setResponse('Message stored successfully!');
+      if (storeResponse.error !== undefined) {
+        setResponse('Message store failed! Here is why: ' + storeResponse.error);
+      }
+      else {
+        setMessageId(storeResponse.messageId);
+        setResponse('Message stored successfully! Message ID: ' + storeResponse.messageId);
+      }
     } catch (error) {
       console.error('Error submitting message:', error);
       setResponse('Error submitting message.');
@@ -79,7 +84,12 @@ const MessageForm = () => {
     try {
       const res = await fetch(`http://localhost:5000/get-message/${queryId}`);
       const retrieveResponse = await res.json();
-      setRetrievedMessage(retrieveResponse.message);
+      if (retrieveResponse.error !== undefined) {
+        setRetrievedMessage('Message retrieval failed! Here is why: ' + retrieveResponse.error);
+      }
+      else {
+        setRetrievedMessage(retrieveResponse.message);
+      }
     } catch (error) {
       console.error('Error retrieving message:', error);
     }
@@ -99,7 +109,12 @@ const MessageForm = () => {
         body: JSON.stringify({ name: newAccountName }),
       });
       const createResponse = await res.json();
-      setNewAccountResponse(`Account created successfully! Address: ${createResponse.address}`);
+      if (createResponse.error !== undefined) {
+        setResponse('Account creation failed! Here is why: ' + createResponse.error);
+      }
+      else {
+        setNewAccountResponse(`Account created successfully! Address: ${createResponse.address}`);
+      }
     } catch (error) {
       console.error('Error creating account:', error);
       setNewAccountResponse('Error creating account.');
@@ -141,8 +156,7 @@ const MessageForm = () => {
         />
         <Button type="submit">Submit</Button>
       </form>
-      {response && <Result>Response: {response}</Result>}
-      {messageId && <Result>Message ID: {messageId}</Result>}
+      {response && <Result> {response}</Result>}
 
       <h2>Retrieve a Message</h2>
       <form onSubmit={handleRetrieve}>
@@ -155,7 +169,7 @@ const MessageForm = () => {
         />
         <Button type="submit">Retrieve</Button>
       </form>
-      {retrievedMessage && <Result>Message: {retrievedMessage}</Result>}
+      {retrievedMessage && <Result> {retrievedMessage}</Result>}
     </Container>
   );
 };
